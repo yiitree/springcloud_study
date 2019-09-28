@@ -1,0 +1,51 @@
+server:
+  port: 8889
+
+spring:
+  application:
+    name: consumer # 应用名称
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true # 开启Spring Cloud的重试功能 # ribbon重试机制
+
+eureka:
+  # EurekaServer地址
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10010/eureka,http://127.0.0.1:10011/eureka
+  instance:
+    prefer-ip-address: true # 当其它服务获取地址时提供ip而不是hostname
+    ip-address: 127.0.0.1 # 指定自己的ip信息，不指定的话会自己寻找
+
+## Feign中本身已经集成了Ribbon的负载均衡，也可以全局配置
+service:
+  ribbon:
+    ConnectTimeout: 250 # 连接超时时间(ms)
+    ReadTimeout: 1000 # 通信超时时间(ms)
+    OkToRetryOnAllOperations: true # 是否对所有操作重试
+    MaxAutoRetriesNextServer: 1 # 同一服务不同实例的重试次数
+    MaxAutoRetries: 1 # 同一实例的重试次数
+
+# Feign默认也有对hystrix的集成
+feign:
+  hystrix:
+    enabled: true # 开启Feign的熔断功能
+  # feign的配置，连接超时及读取超时配置
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+## 熔断器参数设置
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMillisecond: 6000 # 设置hystrix的超时时间为6000ms
+
+

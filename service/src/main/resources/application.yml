@@ -1,0 +1,13 @@
+server:
+  port: 7778
+
+spring:
+  application:
+    name: service # 应用名称
+
+eureka:
+  client:
+    service-url: # EurekaServer地址
+      defaultZone: http://127.0.0.1:10010/eureka, http://127.0.0.1:10011/eureka
+
+
